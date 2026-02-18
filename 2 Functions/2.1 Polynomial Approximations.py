@@ -50,7 +50,7 @@ def sin_approx(x, n):
     if n < 0:
         raise ValueError("n must be at least 0")
     approximation = 0
-    for i in range(n):
+    for i in range((n + 1) // 2):
         approximation += (x ** (2 * i + 1) * ((-1) ** i)) / math.factorial(2 * i + 1)
     return approximation
 
