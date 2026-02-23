@@ -1,7 +1,7 @@
-import math
 import numpy as np
 
 
+# 3.10
 def bisection(f, a, b, tol=1e-5):
     if f(a) * f(b) >= 0:
         raise ValueError(
@@ -19,6 +19,7 @@ def bisection(f, a, b, tol=1e-5):
     return midpoint
 
 
+# 3.11
 f1 = lambda x: x**2 - 2
 print(bisection(f1, 0, 2))
 
