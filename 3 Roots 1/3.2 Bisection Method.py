@@ -28,7 +28,7 @@ f2 = lambda x: np.sin(x) + x**2 - 2 * np.log(x) - 5
 print(bisection(f2, 1, 5))
 
 f3 = lambda x: 3 * np.sin(x) + 9 - x**2 - np.cos(x)
-print(bisection(f3, 1, 5))
+print(bisection(f3, 1, 5, 1e-6))
 
 
 # 3.14
