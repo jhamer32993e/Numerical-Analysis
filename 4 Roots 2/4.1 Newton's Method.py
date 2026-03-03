@@ -44,7 +44,7 @@ def newton_with_error_tracking(f, fdash, x_exact, x0, tol=1e-10):
             return ValueError("Derivative equals zero")
         x = xnew
         xnew = x - (f(x) / fdash(x))
-        error = abs(xnew - x_exact)
+        error = np.abs(xnew - x_exact)
         errors.append(error)
     return errors
 
