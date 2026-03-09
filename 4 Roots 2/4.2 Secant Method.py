@@ -9,11 +9,14 @@ def secant(f, x0, x1, tol=1e-10):
         xnp1 = xn - f(xn) * (xn - xnm1) / (f(xn) - f(xnm1))
         xnm1 = xn
         xn = xnp1
+        print(xn)
     return xn
 
 
 f = lambda x: x**2 - 2
-print(secant(f, 0, 1))
+#print(secant(f, 0, 1))
+f1 = lambda x: np.log(x) - np.sin(x)
+secant(f1, 1, 3)
 
 
 def secant_with_error_tracking(f, x_exact, x0, x1, tol=1e-10):
@@ -29,7 +32,7 @@ def secant_with_error_tracking(f, x_exact, x0, x1, tol=1e-10):
     return errors
 
 
-print(secant_with_error_tracking(f, np.sqrt(2), 0, 2))
+#print(secant_with_error_tracking(f, np.sqrt(2), 0, 2))
 
 
 def plot_error_progression(errors):

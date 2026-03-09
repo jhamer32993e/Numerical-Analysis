@@ -143,3 +143,8 @@ def plot_error_progression(errors):
 
 
 plot_error_progression(bisection_with_error_tracking(f5, 3, 0, 5, 1e-7))
+
+f6 = lambda x: x**3 - 3
+plot_errors(bisection_with_error_tracking(f6, np.cbrt(3), 1, 2, 1e-7 ))
+plot_log_errors(bisection_with_error_tracking(f6, np.cbrt(3), 1, 2, 1e-7 ))
+plot_error_progression(bisection_with_error_tracking(f6, np.cbrt(3), 1, 2, 1e-7 ))
