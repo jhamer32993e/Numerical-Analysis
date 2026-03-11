@@ -254,10 +254,43 @@ plt.legend()
 plt.show()
 
 
-# 5.22
+# 5.23
 def SecondDiff(f, a, b, N):
     x = np.linspace(a, b, N + 1)
     h = (x[1] - x[0]) ** 2
     y = f(x)
     df = (y[2:] - 2 * y[1:-1] + y[:-2]) / h
     return df
+
+
+# 5.24
+f = lambda x: np.sin(x) * (1 - x)
+print(SecondDiff(f, 0, 2, 100)[49])
+print(-2 * np.cos(1))
+
+# 5.25
+x = np.linspace(0, 15, 151)
+exact = lambda x: -2 * np.cos(x) + (x - 1) * np.sin(x)
+error = abs(SecondDiff(f, 0, 15, 150) - exact(x)[1:-1])
+print(max(error))
+
+
+def plotMaxSecondDiffErrors(f, fddash, a, b, H):
+    maxError = []
+    for i in H:
+        N = int((b - a) / i)
+        x = np.linspace(a, b, N + 1)
+        df = SecondDiff(f, a, b, N)
+        errors = abs(fddash(x[1:-1]) - df)
+        maxError.append(max(errors))
+    plt.loglog(H, maxError, "r*-")  # Makes axes log scales
+    plt.xlabel("h")
+    plt.ylabel("Max Absolute Error")
+    plt.title("Max Absolute Error vs. h")
+    plt.grid()
+    plt.show()
+    return
+
+
+fddash = lambda x: (x - 1) * np.sin(x) - 2 * np.cos(x)
+plotMaxSecondDiffErrors(f, fddash, 0, 15, [0.1, 0.2, 0.4, 0.8, 1.6])

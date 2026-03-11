@@ -71,9 +71,9 @@ def PlotRiemannErrors(f, a, b, exact, DX):
 
     for dx in DX:
         N = int(np.round((b - a) / dx))
-        LeftError.append(abs(RiemannSum(f, a, b, N, "left")))
-        RightError.apend(abs(RiemannSum(f, a, b, N, "right")))
-        MidpointError.append(abs(RiemannSum(f, a, b, N, "midpoint")))
+        LeftError.append(abs(RiemannSum(f, a, b, N, "left") - exact))
+        RightError.apend(abs(RiemannSum(f, a, b, N, "right") - exact))
+        MidpointError.append(abs(RiemannSum(f, a, b, N, "midpoint") - exact))
 
     plt.loglog(DX, LeftError, "b*", label="Left Sum", markersize=14)
     plt.loglog(DX, RightError, "ro", label="Right Sum")
