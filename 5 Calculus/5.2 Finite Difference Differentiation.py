@@ -294,3 +294,20 @@ def plotMaxSecondDiffErrors(f, fddash, a, b, H):
 
 fddash = lambda x: (x - 1) * np.sin(x) - 2 * np.cos(x)
 plotMaxSecondDiffErrors(f, fddash, 0, 15, [0.1, 0.2, 0.4, 0.8, 1.6])
+
+
+f1 = lambda x: np.sin(x) * (1 - x)
+a = 0
+b = 15
+N = 250
+x = np.linspace(a, b, N)
+y = f1(x)
+df = SecondDiff(f1, a, b, N)
+exact = lambda x: np.cos(x) * (1 - x) - np.sin(x)
+fig, ax = plt.subplots(1, 2)  # Makes 1x2 grid for the plots to display in
+ax[0].plot(x, y, "b", x[0:-1], df, "r--")  # Plots the two in the first box
+ax[0].grid()
+ax[1].semilogy(x[0:-1], abs(exact(x[0:-1]) - df))  # Second box, y axis log scale,
+# plot error against x
+ax[1].grid()
+plt.show()
