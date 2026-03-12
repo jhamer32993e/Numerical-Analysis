@@ -154,4 +154,99 @@ def PlotTrapeziumErrors(f, a, b, exact, DX):
 
 
 DX = [2 ** (-n) for n in range(1, 11)]
-PlotTrapeziumErrors(f, 1, 3, exact, DX)
+PlotTrapeziumErrors(f, 1, 4, exact, DX)
+
+
+# 5.38
+def Simpson(f, a, b, N):
+    x = np.linspace(a, b, N + 1)
+    h = (b - a) / N
+    y = f(x)
+    m = (x[1:] + x[:-1]) / 2
+    Area = (h / 6) * (y[0] + y[-1] + 2 * np.sum(y[1:-1]) + 4 * np.sum(f(m)))
+    return Area
+
+
+# 5.39
+def SimpsonTable(f, a, b, factor, exact):
+    hdr1 = "Δx"
+    hdr2 = f"A_(Δx)"
+    hdr3 = f"|I - A_(Δx)|"
+    hdr4 = "Error reduction factor"
+    print(f"{hdr1:<20} | {hdr2:<18} | {hdr3:<18} | {hdr4:<18}")
+    print("-" * 82)
+    for n in range(1, 11):
+        dx = factor ** (-n)
+        dx_str = f"{factor}^-{n} = {dx:g}"
+        approx = Simpson(f, a, b, int(np.round((b - a) / dx)))
+        error = abs(exact - approx)
+        if n == 1:
+            print(f"{dx_str:<20} | {approx:<18.15f} | {error:<18.15f} | ")
+        else:
+            print(
+                f"{dx_str:<20} | {approx:<18.15f} | {error:<18.15f} | {error_prev/error:<18.15f}"
+            )
+        error_prev = error
+    print()
+    return
+
+
+def PlotSimpsonErrors(f, a, b, exact, DX):
+    Error = []
+
+    for dx in DX:
+        N = int(np.round((b - a) / dx))
+        Error.append(abs(Simpson(f, a, b, N) - exact))
+
+    plt.loglog(DX, Error, "b^-", label="Simpson", markersize=8)
+
+    plt.xlabel("Δx")
+    plt.ylabel("Absolute Error")
+    plt.title("Absolute Error vs. Δx")
+    plt.legend()
+    plt.grid(True, which="both", ls="--")
+    plt.show()
+    return
+
+
+f = lambda x: np.exp(x)
+exact = np.exp(1) - np.exp(0)
+SimpsonTable(f, 0, 1, 2, exact)
+PlotSimpsonErrors(f, 0, 1, exact, DX)
+
+# 5.40
+f = lambda x: np.exp(3 * x) * np.sin(2 * x)
+exact = 3 / 13 * np.exp(0.75 * np.pi) + 2 / 13
+
+
+def CompareErrors(f, a, b, exact, DX):
+    RLError = []
+    RRError = []
+    RMError = []
+    TError = []
+    SError = []
+
+    for dx in DX:
+        N = int(np.round((b - a) / dx))
+        RLError.append(abs(RiemannSum(f, a, b, N, "left") - exact))
+        RRError.append(abs(RiemannSum(f, a, b, N, "right") - exact))
+        RMError.append(abs(RiemannSum(f, a, b, N, "midpoint") - exact))
+        TError.append(abs(Trapezium(f, a, b, N) - exact))
+        SError.append(abs(Simpson(f, a, b, N) - exact))
+
+    plt.loglog(DX, RLError, "b*", label="Riemann Sum - Left", markersize=14)
+    plt.loglog(DX, RRError, "m*", label="Riemann Sum - Right")
+    plt.loglog(DX, RMError, "c*", label="Riemann Sum - Midpoint", markersize=14)
+    plt.loglog(DX, TError, "ro", label="Trapezium Rule")
+    plt.loglog(DX, SError, "g+", label="Simpson's Rule")
+
+    plt.xlabel("Δx")
+    plt.ylabel("Absolute Error")
+    plt.title("Absolute Error vs. Δx")
+    plt.legend()
+    plt.grid(True, which="both", ls="--")
+    plt.show()
+    return
+
+
+CompareErrors(f, 0, 0.25 * np.pi, exact, DX)
