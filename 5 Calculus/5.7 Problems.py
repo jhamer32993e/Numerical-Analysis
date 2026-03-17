@@ -240,21 +240,22 @@ FuelPriceAvg = FuelPriceFrame["New York State Average ($/gal)"]
 FuelROC = FuelPriceAvg.values[1:] - FuelPriceAvg.values[:-1]
 
 fig, ax1 = plt.subplots()
-color1 = "blue"
 ax1.set_xlabel("Week Number")
 ax1.set_ylabel("Price ($ / gallon)", color=color1)
 ax1.plot(Week, FuelPriceAvg, color=color1, label="Gas Price", linewidth=2)
 ax1.tick_params(axis="y", labelcolor=color1)
 ax1.grid(True, alpha=0.3)
+plt.title("New York Gas Prices")
 
-ax2 = ax1.twinx()
-color2 = "red"
+fig, ax2 = plt.subplots()
 ax2.set_ylabel("Derivative ($ change per week)", color=color2)
 ax2.plot(Week[:-1], FuelROC, color=color2, label="Rate of Change", alpha=0.6)
 ax2.tick_params(axis="y", labelcolor=color2)
 ax2.axhline(0, color="black", linestyle="--", linewidth=1)
 
-plt.title("New York Gas Prices and Rate of Change (Dual Axis)")
+plt.title("New York Gas Prices Rate of Change")
 fig.tight_layout()
 plt.show()
 # Derivative shows the rate of change of gas prices in New York state by week
+
+
