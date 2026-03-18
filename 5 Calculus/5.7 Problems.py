@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import scipy
+from scipy.integrate import quad
 
 
 # 5.48
@@ -224,12 +224,12 @@ def PlotTrapeziumErrors(f, a, b, exact, DX):
 
 
 f1 = lambda x: np.exp(-(x**2) / 2)
-f1Exact = scipy.integrate.quad(f1, -2, 2)[0]
+f1Exact = quad(f1, -2, 2)[0]
 DX = [2 ** (-n) for n in range(1, 11)]
 PlotTrapeziumErrors(f1, -2, 2, f1Exact, DX)
 
 f2 = lambda x: np.cos(x**2)
-f2Exact = scipy.integrate.quad(f2, 0, 1)[0]
+f2Exact = quad(f2, 0, 1)[0]
 PlotTrapeziumErrors(f2, 0, 1, f2Exact, DX)
 
 
@@ -277,3 +277,63 @@ print(sum(TrapeziumArray(Distance, JourneyNo)))
 # Integral gives the total distance travelled by taxis in 10000 journeys
 
 # 5.54
+f1 = lambda x: x / (x**4 + 1)
+F1Exact = 0.5 * np.arctan(4) - 0.5 * np.arctan(1)
+f2 = lambda x: (x - 1) ** 3 * (x - 2) ** 2
+F2Exact = -549 / 20
+f3 = lambda x: np.sin(x**2)
+F3Exact = quad(f3, -1, 2)[0]
+
+
+def ForwardDiff(f, a, b, N):
+    x = np.linspace(a, b, N + 1)
+    h = x[1] - x[0]
+    df = []
+    # Fixed the loop structure to be more pythonic
+    for j in range(len(x) - 1):
+        df.append((f(x[j + 1]) - f(x[j])) / h)
+    return df
+
+
+def Simpson(f, a, b, N):
+    x = np.linspace(a, b, N + 1)
+    h = (b - a) / N
+    y = f(x)
+    m = (x[1:] + x[:-1]) / 2
+    Area = (h / 6) * (y[0] + y[-1] + 2 * np.sum(y[1:-1]) + 4 * np.sum(f(m)))
+    return Area
+
+
+def IntAndDeriv(f, FExact, a, b, N, title_label="Function"):
+    Area = Simpson(f, a, b, N)
+    print(f"--- {title_label} ---")
+    print("Approx Area:", Area)
+    print("Error:", abs(Area - FExact))
+
+    DerivPoints = ForwardDiff(f, a, b, N)
+    x = np.linspace(a, b, N + 1)
+
+    plt.figure()
+
+    plt.plot(x, f(x), "b", label="f(x)")
+    plt.plot(x[:-1], DerivPoints, "k-.", label="Approx first deriv")
+    plt.grid()
+    plt.legend()
+    plt.title(title_label)
+    plt.show(block=False)
+
+
+IntAndDeriv(f1, F1Exact, -1, 2, 1000, "f1")
+IntAndDeriv(f2, F2Exact, -1, 2, 1000, "f2")
+IntAndDeriv(f3, F3Exact, -1, 2, 1000, "f3")
+
+
+# 5.55
+data = np.array(
+    pd.read_csv(
+        "https://github.com/gustavdelius/NumericalAnalysis2025/raw/main/data/Calculus/bikespeed.csv"
+    )
+)
+t = data[:, 0]
+v = data[:, 1]
+print(sum(TrapeziumArray(v, t)))
