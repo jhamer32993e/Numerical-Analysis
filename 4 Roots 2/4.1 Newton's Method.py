@@ -16,10 +16,10 @@ def table(f, fdash, x0):
 
 
 # 4.7
-def newton(f, fdash, x0, tol=1e-10):
+def newton(f, fdash, x0, tol=1e-10, MaxIterations=30):
     x = x0
     xnew = x - f(x) / fdash(x)
-    for i in range(30):
+    for i in range(MaxIterations):
         if fdash(x) == 0:
             return ValueError("Derivative goes to zero")
         x = xnew
@@ -29,11 +29,11 @@ def newton(f, fdash, x0, tol=1e-10):
     return "Does not converge"
 
 
-#print(newton(f, fdash, 1))
+# print(newton(f, fdash, 1))
 
 f1 = lambda x: x ** (1 / 3)
 f1dash = lambda x: (1 / 3) * x ** (-2 / 3)
-#table(f1, f1dash, 7)
+# table(f1, f1dash, 7)
 
 
 # 4.14
@@ -83,7 +83,7 @@ def plot_error_progression(errors):
     plt.show()
 
 
-#plot_error_progression(newton_with_error_tracking(f, fdash, np.sqrt(2), 1))
+# plot_error_progression(newton_with_error_tracking(f, fdash, np.sqrt(2), 1))
 
 
 # 4.16
@@ -92,4 +92,4 @@ def plot_error_progression(errors):
 # 4.17
 f2 = lambda x: np.exp(x - 3) + np.sqrt(x + 6) - 4
 f2dash = lambda x: np.exp(x - 3) + 0.5 * (x + 6) ** (-0.5)
-#plot_error_progression(newton_with_error_tracking(f2, f2dash, 3, 1))
+# plot_error_progression(newton_with_error_tracking(f2, f2dash, 3, 1))

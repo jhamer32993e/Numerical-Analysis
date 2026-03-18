@@ -22,6 +22,7 @@ def GoldenSection(f, a, b, c, tol=1e-12):
     if f(a) <= f(c) or f(b) <= f(c):
         raise ValueError("f(c) not less than both f(a) and f(b)")
     rho = (3 - 5**0.5) / 2
+    print(rho)
     fc = f(c)
     while b - a >= tol:
         if b - c > c - a:
@@ -50,3 +51,24 @@ def GoldenSection(f, a, b, c, tol=1e-12):
 
 f1 = lambda x: -np.exp(-(x**2)) - np.sin(x**2)
 print(GoldenSection(f1, 0, 2, 1))
+
+
+# 6.9
+def GradientDescent(fDash, x0, alpha, tol=1e-12, MaxIterations=1000):
+    x = x0
+    xnew = x - alpha * fDash(x)
+    count = 0
+    for i in range(MaxIterations):
+        x = xnew
+        grad = fDash(x)
+        xnew = x - alpha * grad
+        count += 1
+        if np.abs(grad) < tol:
+            return xnew, count
+    raise ValueError("Does not converge")
+
+
+f2Dash = lambda x: 4 * np.cos(4 * x) * (x**2 - 10 * x) + (np.sin(4 * x) + 1) * (
+    2 * x - 10
+)
+print(GradientDescent(f2Dash, 3, 0.001))
