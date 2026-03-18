@@ -241,16 +241,16 @@ FuelROC = FuelPriceAvg.values[1:] - FuelPriceAvg.values[:-1]
 
 fig, ax1 = plt.subplots()
 ax1.set_xlabel("Week Number")
-ax1.set_ylabel("Price ($ / gallon)", color=color1)
-ax1.plot(Week, FuelPriceAvg, color=color1, label="Gas Price", linewidth=2)
-ax1.tick_params(axis="y", labelcolor=color1)
+ax1.set_ylabel("Price ($ / gallon)", color="blue")
+ax1.plot(Week, FuelPriceAvg, color="blue", label="Gas Price", linewidth=2)
+ax1.tick_params(axis="y", labelcolor="blue")
 ax1.grid(True, alpha=0.3)
 plt.title("New York Gas Prices")
 
 fig, ax2 = plt.subplots()
-ax2.set_ylabel("Derivative ($ change per week)", color=color2)
-ax2.plot(Week[:-1], FuelROC, color=color2, label="Rate of Change", alpha=0.6)
-ax2.tick_params(axis="y", labelcolor=color2)
+ax2.set_ylabel("Derivative ($ change per week)", color="red")
+ax2.plot(Week[:-1], FuelROC, color="red", label="Rate of Change", alpha=0.6)
+ax2.tick_params(axis="y", labelcolor="red")
 ax2.axhline(0, color="black", linestyle="--", linewidth=1)
 
 plt.title("New York Gas Prices Rate of Change")
@@ -259,3 +259,21 @@ plt.show()
 # Derivative shows the rate of change of gas prices in New York state by week
 
 
+Taxi = pd.read_csv("Taxi.csv", nrows=10000)
+Distance = Taxi["trip_distance"].fillna(0).values
+JourneyNo = [i for i in range(len(Distance))]
+
+
+def TrapeziumArray(y, x):
+    y = np.array(y)
+    x = np.array(x)
+
+    dx = np.diff(x)
+    Areas = 0.5 * dx * (y[:-1] + y[1:])
+    return Areas
+
+
+print(sum(TrapeziumArray(Distance, JourneyNo)))
+# Integral gives the total distance travelled by taxis in 10000 journeys
+
+# 5.54
