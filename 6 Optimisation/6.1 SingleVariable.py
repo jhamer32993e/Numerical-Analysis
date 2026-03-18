@@ -54,7 +54,7 @@ print(GoldenSection(f1, 0, 2, 1))
 
 
 # 6.9
-def GradientDescent(fDash, x0, alpha, tol=10e-12, MaxIterations=1000):
+def GradientDescent(fDash, x0, alpha, tol=1e-12, MaxIterations=1000):
     x = x0
     xnew = x - alpha * fDash(x)
     count = 0
@@ -63,11 +63,12 @@ def GradientDescent(fDash, x0, alpha, tol=10e-12, MaxIterations=1000):
         grad = fDash(x)
         xnew = x - alpha * grad
         count += 1
-        if np.abs(grad) < tol:
+        if np.abs(xnew - x) < tol:
             return xnew, count
     raise ValueError("Does not converge")
 
 
+# 6.10
 f2Dash = lambda x: 4 * np.cos(4 * x) * (x**2 - 10 * x) + (np.sin(4 * x) + 1) * (
     2 * x - 10
 )
@@ -75,19 +76,20 @@ print(GradientDescent(f2Dash, 3, 0.003))
 
 
 # 6.12
-def gradient_descent_with_error_tracking(fDash, alpha, x_exact, x0, tol=10e-12):
+def gradient_descent_with_error_tracking(fDash, alpha, x_exact, x0, tol=1e-12):
     errors = []
     x = x0
+    errors.append(np.abs(x - x_exact))
     xnew = x - alpha * fDash(x)
-    grad = fDash(x)
-    while np.abs(grad) > tol:
-        if fDash(x) == 0:
-            return ValueError("Derivative equals zero")
+
+    while np.abs(xnew - x) > tol:
         x = xnew
-        grad = fDash(x)
+        errors.append(np.abs(x - x_exact))
+
         xnew = x - alpha * fDash(x)
-        error = np.abs(xnew - x_exact)
-        errors.append(error)
+        if fDash(x) == 0:
+            break
+
     return errors
 
 
@@ -97,11 +99,10 @@ print(gradient_descent_with_error_tracking(f3Dash, 0.1, np.pi, 3))
 
 def plot_error_progression(errors):
     # Calculating the log2 of the absolute error at step n and n+1
-    log_errors = np.log(errors)
+    log_errors = np.log2(errors)
     log_errors_n = log_errors[:-1]  # log errors at step n (excluding the last one)
-    log_errors_n_plus_1 = log_errors[
-        1:
-    ]  # log errors at step n+1 (excluding the first one)
+    log_errors_n_plus_1 = log_errors[1:]
+    # log errors at step n+1 (excluding the first one)
 
     # Plotting log_errors_n+1 vs log_errors_n
     plt.scatter(
@@ -122,4 +123,4 @@ def plot_error_progression(errors):
     plt.show()
 
 
-plot_error_progression(gradient_descent_with_error_tracking(f3Dash, 0.01, np.pi, 3))
+plot_error_progression(gradient_descent_with_error_tracking(f3Dash, 0.1, np.pi, 3))
