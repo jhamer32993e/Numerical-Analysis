@@ -54,7 +54,7 @@ print(GoldenSection(f1, 0, 2, 1))
 
 
 # 6.9
-def GradientDescent(fDash, x0, alpha, tol=1e-12, MaxIterations=1000):
+def GradientDescent(fDash, x0, alpha, tol=10e-12, MaxIterations=1000):
     x = x0
     xnew = x - alpha * fDash(x)
     count = 0
@@ -71,4 +71,55 @@ def GradientDescent(fDash, x0, alpha, tol=1e-12, MaxIterations=1000):
 f2Dash = lambda x: 4 * np.cos(4 * x) * (x**2 - 10 * x) + (np.sin(4 * x) + 1) * (
     2 * x - 10
 )
-print(GradientDescent(f2Dash, 3, 0.001))
+print(GradientDescent(f2Dash, 3, 0.003))
+
+
+# 6.12
+def gradient_descent_with_error_tracking(fDash, alpha, x_exact, x0, tol=10e-12):
+    errors = []
+    x = x0
+    xnew = x - alpha * fDash(x)
+    grad = fDash(x)
+    while np.abs(grad) > tol:
+        if fDash(x) == 0:
+            return ValueError("Derivative equals zero")
+        x = xnew
+        grad = fDash(x)
+        xnew = x - alpha * fDash(x)
+        error = np.abs(xnew - x_exact)
+        errors.append(error)
+    return errors
+
+
+f3Dash = lambda x: -np.sin(x)
+print(gradient_descent_with_error_tracking(f3Dash, 0.1, np.pi, 3))
+
+
+def plot_error_progression(errors):
+    # Calculating the log2 of the absolute error at step n and n+1
+    log_errors = np.log(errors)
+    log_errors_n = log_errors[:-1]  # log errors at step n (excluding the last one)
+    log_errors_n_plus_1 = log_errors[
+        1:
+    ]  # log errors at step n+1 (excluding the first one)
+
+    # Plotting log_errors_n+1 vs log_errors_n
+    plt.scatter(
+        log_errors_n, log_errors_n_plus_1, label="Log Error at n+1 vs Log Error at n"
+    )
+
+    # Fitting a straight line to the data points
+    slope, intercept = np.polyfit(log_errors_n, log_errors_n_plus_1, deg=1)
+    print(slope, intercept)
+    best_fit_line = slope * log_errors_n + intercept
+    plt.plot(log_errors_n, best_fit_line, color="red", label="Best Fit Line")
+
+    # Setting up the plot
+    plt.xlabel("Log2 of Absolute Error at Step n")
+    plt.ylabel("Log2 of Absolute Error at Step n+1")
+    plt.title("Log2 of Absolute Error at Step n+1 vs Step n")
+    plt.legend()
+    plt.show()
+
+
+plot_error_progression(gradient_descent_with_error_tracking(f3Dash, 0.01, np.pi, 3))

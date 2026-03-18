@@ -129,7 +129,7 @@ plt.show()
 f1 = lambda x: np.sin(x) * (1 - x)
 a = 0
 b = 15
-N = 250
+N = 1000
 x = np.linspace(a, b, N + 1)
 y = f1(x)
 df = ForwardDiff2(f1, a, b, N)

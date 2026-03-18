@@ -13,7 +13,7 @@ def RiemannSum(f, a, b, N, method="left"):
     elif method == "right":
         area = sum(w * y[1:])
     elif method == "midpoint":
-        area = sum(0.5 * w * (y[:-1] + y[1:]))
+        area = sum(w * f(0.5 * (x[:-1] + x[1:])))
     return area
 
 
@@ -26,6 +26,7 @@ print(RiemannSum(f1, 0, 1, 100, "left"))
 print(RiemannSum(f1, 0, 1, 100, "right"))
 print(RiemannSum(f1, 0, 1, 100, "midpoint"))
 print("-" * 50)
+print(RiemannSum(lambda x: np.sin(x), 1, 4, 100, "midpoint"))
 
 # 5.30
 exact = np.cos(0) - np.cos(1)
@@ -105,6 +106,7 @@ def Trapezium(f, a, b, N):
 
 f = lambda x: 0.2 * (x**2) * (5 - x)
 print(Trapezium(f, 1, 4, 100))
+print(Trapezium(lambda x: np.sin(x), 1, 4, 100))
 
 
 def TrapeziumTable(f, a, b, factor, exact):
@@ -165,6 +167,9 @@ def Simpson(f, a, b, N):
     m = (x[1:] + x[:-1]) / 2
     Area = (h / 6) * (y[0] + y[-1] + 2 * np.sum(y[1:-1]) + 4 * np.sum(f(m)))
     return Area
+
+
+print(Simpson(lambda x: np.sin(x), 1, 4, 100))
 
 
 # 5.39
