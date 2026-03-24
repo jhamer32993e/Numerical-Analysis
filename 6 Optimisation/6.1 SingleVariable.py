@@ -15,7 +15,7 @@ print(x[np.argmin(y)])
 
 
 # 6.5
-def GoldenSection(f, a, b, c, tol=1e-12):
+def GoldenSection(f, a, c, b, tol=1e-12):
     if a >= c or c >= b:
         raise ValueError("points not in order a < c < b")
 
