@@ -41,6 +41,7 @@ plt.ylabel("Velocity")
 plt.xlabel("Position")
 plt.show()
 
+print("- " * 40)
 
 # 7.10
 a, b, c, d = 1, 0.1, 1, 0.1
