@@ -3,7 +3,7 @@ import numpy as np
 import math
 
 # 2.4, 2.5
-x = np.arange(-1, 1, 0.01)
+x = np.linspace(-1, 1, 200)
 y = np.exp(x)
 y0 = x / x
 y1 = 1 + x
@@ -14,8 +14,11 @@ cub = plt.plot(x, y3, label="cubic")
 quad = plt.plot(x, y2, label="quadratic")
 lin = plt.plot(x, y1, label="linear")
 const = plt.plot(x, y0, label="constant")
+plt.title("Exponential Taylor Approximations")
 plt.legend()
 plt.show()
+
+print("- " * 40)
 
 
 # 2.6
@@ -28,12 +31,21 @@ def exp_approx(x, n):
     return approximation
 
 
-print(exp_approx(1, 40))
+print(f"e ~= {exp_approx(1, 40)}")
+acc = np.abs((exp_approx(1, 40) - np.exp(1))) / np.exp(1) * 100
+print("e accuracy is:", acc, "%")
+
+print("- " * 40)
+
+# 2.7
 print("e^-1 =", exp_approx(-1, 40))
 acc = np.abs((exp_approx(-1, 40) - np.exp(-1))) / np.exp(-1) * 100
-print("Accuracy is:", acc, "%")
+print("e^-1 accuracy is:", acc, "%")
+
+print("- " * 40)
 
 
+# 2.8
 def my_exp_approx(x, n):
     if n < 0:
         raise ValueError("n must be at least 0")
@@ -55,20 +67,25 @@ def sin_approx(x, n):
     return approximation
 
 
-print(sin_approx(0.5, 10))
-print(np.sin(0.5))
+print(f"My sin(0.5) approximation: {sin_approx(0.5, 5)}")
+print("Numpy sin(0.5) value:", np.sin(0.5))
 
-x = np.arange(-np.pi, np.pi, 0.01)
+
+x = np.linspace(-np.pi, np.pi, 100)
 y1 = sin_approx(x, 1)
 y2 = sin_approx(x, 2)
 y3 = sin_approx(x, 3)
 sin = np.sin(x)
-t5 = plt.plot(x, y3, label="3 Terms")
-t3 = plt.plot(x, y2, label="2 Term")
-t1 = plt.plot(x, y1, label="1 Terms")
-sinplot = plt.plot(x, sin, label="sinx")
+
+plt.plot(x, y3, label="3 Terms")
+plt.plot(x, y2, label="2 Term")
+plt.plot(x, y1, label="1 Terms")
+plt.plot(x, sin, label="sinx")
+plt.title("Sin Taylor Approximations")
 plt.legend()
 plt.show()
+
+print("- " * 40)
 
 
 # 2.12
@@ -81,19 +98,21 @@ def log_approx(x, n):
     return approximation
 
 
-print(log_approx(0.9, 10))
-print(np.log(0.9))
+print(f"My log(0.9) approximation: {log_approx(0.9, 10)}")
+print("Numpy log(0.9) value:", np.log(0.9))
 
-x = np.arange(0.1, 2, 0.01)
+x = np.linspace(0.1, 2, 100)
 log = np.log(x)
 y1 = log_approx(x, 1)
 y2 = log_approx(x, 2)
 y3 = log_approx(x, 3)
 y4 = log_approx(x, 4)
-t1 = plt.plot(x, y1, label="Linear")
-t2 = plt.plot(x, y2, label="Quadratic")
-t3 = plt.plot(x, y3, label="Cubic")
-t4 = plt.plot(x, y4, label="Quartic")
-logplot = plt.plot(x, log, label="Log")
+
+plt.plot(x, y1, label="Linear")
+plt.plot(x, y2, label="Quadratic")
+plt.plot(x, y3, label="Cubic")
+plt.plot(x, y4, label="Quartic")
+plt.plot(x, log, label="Log")
+plt.title("Log Taylor Approximation")
 plt.legend()
 plt.show()

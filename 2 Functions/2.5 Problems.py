@@ -1,5 +1,6 @@
-import math
 import numpy as np
+
+# 2.31
 
 
 # Pi approximation using Taylor series of 1/(1+x), then x -> x^2, then integrate

@@ -24,6 +24,7 @@ def two_layer_network(x, biases, output_weights, output_bias=0):
     return f_nn
 
 
+# 2.25
 def plot_neural_network(
     biases, output_weights, output_bias=0, x_range=(0, np.pi), target_func=np.sin
 ):
@@ -96,62 +97,63 @@ plt.plot(x, shallow_2_peak_network(x), "r-", lw=3)
 plt.grid()
 plt.xlabel("x")
 plt.ylabel("f(x)")
-plt.title("2-Peak Sawtooth Function")
+plt.title("2-Peak Sawtooth Function - 2 layer network")
 plt.show()
 
 
 def g(x):
-    """ Single triangular peak """
+    """Single triangular peak"""
     biases = [0, -0.5, -1]
     output_weights = [2, -4, 2]
     return two_layer_network(x, biases, output_weights)
 
+
 # Plot
 plt.figure(figsize=(10, 6))
-x = np.linspace(-0.1,1.1,500)
-plt.plot(x, g(x), 'r-', lw=3)
+x = np.linspace(-0.1, 1.1, 500)
+plt.plot(x, g(x), "r-", lw=3)
 plt.grid()
-plt.xlabel('x')
-plt.ylabel('g(x)')
-plt.title('Single peak function')
+plt.xlabel("x")
+plt.ylabel("g(x)")
+plt.title("Single peak function - 2 layer network")
 plt.show()
 
 f = lambda x: g(g(x))
 
 # Plot
 plt.figure(figsize=(10, 6))
-x = np.linspace(-0.1,1.1,500)
-plt.plot(x, f(x), 'r-', lw=3)
+x = np.linspace(-0.1, 1.1, 500)
+plt.plot(x, f(x), "r-", lw=3)
 plt.grid()
-plt.xlabel('x')
-plt.ylabel('f(x)')
-plt.title('2-Peak Sawtooth Function')
+plt.xlabel("x")
+plt.ylabel("f(x)")
+plt.title("2-Peak Sawtooth Function - Deep")
 plt.show()
 
 h = lambda x: g(g(g(x)))
 
 # Plot
 plt.figure(figsize=(10, 6))
-x = np.linspace(-0.1,1.1,500)
-plt.plot(x, h(x), 'r-', lw=3)
+x = np.linspace(-0.1, 1.1, 500)
+plt.plot(x, h(x), "r-", lw=3)
 plt.grid()
-plt.xlabel('x')
-plt.ylabel('h(x)')
-plt.title('4-Peak Sawtooth Function')
+plt.xlabel("x")
+plt.ylabel("h(x)")
+plt.title("4-Peak Sawtooth Function - Deep")
 plt.show()
 
 # TODO: Create arrays for different numbers of peaks
 peaks = [2, 4, 8, 16, 32, 64]
 shallow_neurons = [5, 9, 17, 33, 65, 129]  # Fill in based on your formula
-deep_neurons = [6, 9, 12, 15, 18, 21]     # Fill in based on your formula
+deep_neurons = [6, 9, 12, 15, 18, 21]  # Fill in based on your formula
 
 # Plot
 plt.figure(figsize=(8, 5))
-plt.plot(peaks, shallow_neurons, 'bo-', label='Shallow Network', lw=2)
-plt.plot(peaks, deep_neurons, 'mo-', label='Deep Network', lw=2)
-plt.xlabel('Number of Peaks')
-plt.ylabel('Number of Hidden Neurons')
-plt.title('Scaling: Shallow vs Deep Networks')
+plt.plot(peaks, shallow_neurons, "bo-", label="Shallow Network", lw=2)
+plt.plot(peaks, deep_neurons, "mo-", label="Deep Network", lw=2)
+plt.xlabel("Number of Peaks")
+plt.ylabel("Number of Hidden Neurons")
+plt.title("Scaling: Shallow vs Deep Networks")
 plt.legend()
 plt.grid(True, alpha=0.3)
 plt.show()

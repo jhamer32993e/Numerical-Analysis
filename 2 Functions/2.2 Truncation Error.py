@@ -2,7 +2,7 @@ import numpy as np
 import math
 
 
-# 2.13
+# 2.13 + 2.14 (final column)
 def exp_approx(x, n):
     if n < 0:
         raise ValueError("n must be at least 0")
@@ -44,6 +44,8 @@ for n in range(2, 6):
         f"{n:<8} | {f_n(0.1):<15.10g} | {e_n(0.1):<15.10g} | {f_n(0.2):<15.10g} | {e_n(0.2):<15.10g} | {e_n(0.2)/e_n(0.1):<15.10g}"
     )
 print()
+print("- " * 40)
+print()
 
 
 # 2.15
@@ -71,6 +73,8 @@ for n in range(1, 6):
     print(
         f"{2*n-1:<8} | {f_n(0.1):<15.10g} | {e_n(0.1):<15.10g} | {f_n(0.2):<15.10g} | {e_n(0.2):<15.10g} | {e_n(0.2)/e_n(0.1):<15.10g}"
     )
+print()
+print("- " * 40)
 print()
 
 
