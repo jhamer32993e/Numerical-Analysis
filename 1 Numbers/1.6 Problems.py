@@ -1,6 +1,6 @@
 import numpy as np
 
-#1.24
+# 1.24
 accounts = 100 + (100000 - 100) * np.random.rand(50000, 1)
 accounts = np.floor(100 * accounts) / 100
 
@@ -11,12 +11,15 @@ while illegal < 10**6:
     illegal += np.sum(accounts - np.floor(100 * accounts) / 100)
     accounts = np.floor(100 * accounts) / 100
     days += 1
-print(illegal)
-print(days)
+print(f"Illegal balance = ${illegal:.2f}")
+print(f"Acquired in {days} days")
 
-#1.26
-print(9^5)
-print(5^9)
-print(9^2)
-print(9^3)
-print(9^4)
+print("- " * 40)
+
+# 1.26
+print(9 ^ 5)
+print(5 ^ 9)
+print(9 ^ 2)
+print(9 ^ 3)
+print(9 ^ 4)
+# Caret is number of bits that match in binary rep
