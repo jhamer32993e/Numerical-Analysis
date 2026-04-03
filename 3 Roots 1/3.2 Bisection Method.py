@@ -22,13 +22,18 @@ def bisection(f, a, b, tol=1e-5):
 
 # 3.11
 f1 = lambda x: x**2 - 2
-print(bisection(f1, 0, 2))
+print("x =", bisection(f1, 0, 2))
+print()
 
 f2 = lambda x: np.sin(x) + x**2 - 2 * np.log(x) - 5
-print(bisection(f2, 1, 5))
+print("x =", bisection(f2, 1, 5))
+print()
 
 f3 = lambda x: 3 * np.sin(x) + 9 - x**2 - np.cos(x)
-print(bisection(f3, 1, 5, 1e-6))
+print("x =", bisection(f3, 1, 5, 1e-6))
+print()
+
+print("- " * 40)
 
 
 # 3.14
@@ -49,9 +54,10 @@ def for_bisection(f, a, b, n):
     return midpoint
 
 
-print(for_bisection(f3, 1, 5, 22))
+print("x =", for_bisection(f3, 1, 5, 22))
 
 
+# Example 3.1
 def bisection_with_error_tracking(f, x_exact, a, b, tol):
     errors = []
     while (b - a) / 2.0 > tol:
@@ -68,7 +74,7 @@ def bisection_with_error_tracking(f, x_exact, a, b, tol):
 
 
 f4 = lambda x: x**2 - 2
-bisection_with_error_tracking(f4, np.sqrt(2), 1, 2, 1e-7)
+print(bisection_with_error_tracking(f4, np.sqrt(2), 1, 2, 1e-7))
 
 
 def plot_errors(errors):
@@ -79,7 +85,7 @@ def plot_errors(errors):
     plt.scatter(iterations, errors, label="Error per Iteration")
     plt.xlabel("Iteration")
     plt.ylabel("Absolute Error")
-    plt.title("Absolute Error in Each Iteration")
+    plt.title("Absolute Error in Each Iteration - Bisection Method")
     plt.legend()
     plt.show()
 
@@ -104,18 +110,22 @@ def plot_log_errors(errors):
 
     plt.xlabel("Iteration")
     plt.ylabel("Base 2 Log of Absolute Error")
-    plt.title("Absolute Error in Each Iteration")
+    plt.title("Log Absolute Error in Each Iteration")
     plt.legend()
     plt.show()
 
 
 plot_log_errors(bisection_with_error_tracking(f4, np.sqrt(2), 1, 2, 1e-7))
 
+print("- " * 40)
+
+# 3.15
 f5 = lambda x: np.exp(x - 3) + np.sqrt(x + 6) - 4
 plot_errors(bisection_with_error_tracking(f5, 3, 0, 5, 1e-7))
 plot_log_errors(bisection_with_error_tracking(f5, 3, 0, 5, 1e-7))
 
 
+# Example 3.2
 def plot_error_progression(errors):
     # Calculating the log2 of the absolute error at step n and n+1
     log_errors = np.log2(errors)
@@ -142,9 +152,12 @@ def plot_error_progression(errors):
     plt.show()
 
 
+# 3.16
 plot_error_progression(bisection_with_error_tracking(f5, 3, 0, 5, 1e-7))
 
+print("- " * 40)
+
 f6 = lambda x: x**3 - 3
-plot_errors(bisection_with_error_tracking(f6, np.cbrt(3), 1, 2, 1e-7 ))
-plot_log_errors(bisection_with_error_tracking(f6, np.cbrt(3), 1, 2, 1e-7 ))
-plot_error_progression(bisection_with_error_tracking(f6, np.cbrt(3), 1, 2, 1e-7 ))
+plot_errors(bisection_with_error_tracking(f6, np.cbrt(3), 1, 2, 1e-7))
+plot_log_errors(bisection_with_error_tracking(f6, np.cbrt(3), 1, 2, 1e-7))
+plot_error_progression(bisection_with_error_tracking(f6, np.cbrt(3), 1, 2, 1e-7))

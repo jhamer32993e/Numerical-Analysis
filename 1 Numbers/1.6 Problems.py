@@ -17,6 +17,7 @@ print(f"Acquired in {days} days")
 print("- " * 40)
 
 # 1.26
+print("Caret \"^\" Testing")
 print(9 ^ 5)
 print(5 ^ 9)
 print(9 ^ 2)
