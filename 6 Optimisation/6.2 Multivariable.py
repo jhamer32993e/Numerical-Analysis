@@ -36,6 +36,9 @@ def df(x):
     return gradient
 
 
+print("- " * 40)
+
+
 # 6.14
 def GradientDescent(grad, x0, alpha, tol=10e-12, MaxIterations=1000):
     x = x0
@@ -64,6 +67,8 @@ alpha = 1
 tol = 10e-6
 print(GradientDescent(grad0, x0, alpha, tol))
 
+print("- " * 40)
+
 
 # 6.15
 def GradientDescentPath(grad, x0, alpha, tol=1e-12, MaxIterations=1000):
@@ -85,7 +90,6 @@ grad1 = lambda x, y: np.array([2 * x, 200 * y])
 x0 = [1, 1]
 alpha = 0.009
 path = GradientDescentPath(grad1, x0, alpha, tol=1e-6, MaxIterations=1000)
-print(len(path))
 
 
 def plot_path(func, path, x_range=(-2, 2), y_range=(-2, 2), grid_pts=100):
@@ -155,6 +159,7 @@ alpha = 0.009  # Try different values
 path = GradientDescentPath(grad1, [1.0, 1.0], alpha, tol=1e-6, MaxIterations=10000)
 print(len(path))
 plot_path(f1, path)
+print()
 
 f2 = lambda x, y: (1 - x) ** 2 + 100 * (y - x**2) ** 2
 grad2 = lambda x, y: np.array([-2 * (1 - x) - 400 * x * (y - x**2), 200 * (y - x**2)])

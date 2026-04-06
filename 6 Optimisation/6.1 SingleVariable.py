@@ -13,6 +13,8 @@ plt.show()
 y = y(x)
 print(x[np.argmin(y)])
 
+print("- " * 40)
+
 
 # 6.5
 def GoldenSection(f, a, c, b, tol=1e-12):
@@ -22,7 +24,6 @@ def GoldenSection(f, a, c, b, tol=1e-12):
     if f(a) <= f(c) or f(b) <= f(c):
         raise ValueError("f(c) not less than both f(a) and f(b)")
     rho = (3 - 5**0.5) / 2
-    print(rho)
     fc = f(c)
     while b - a >= tol:
         if b - c > c - a:
@@ -50,7 +51,9 @@ def GoldenSection(f, a, c, b, tol=1e-12):
 
 
 f1 = lambda x: -np.exp(-(x**2)) - np.sin(x**2)
-print(GoldenSection(f1, 0, 2, 1))
+print(GoldenSection(f1, 0, 1, 2))
+
+print("- " * 40)
 
 
 # 6.9
@@ -73,6 +76,8 @@ f2Dash = lambda x: 4 * np.cos(4 * x) * (x**2 - 10 * x) + (np.sin(4 * x) + 1) * (
     2 * x - 10
 )
 print(GradientDescent(f2Dash, 3, 0.003))
+
+print("- " * 40)
 
 
 # 6.12
