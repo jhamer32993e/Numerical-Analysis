@@ -3,6 +3,67 @@ import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
 
 
+# 4.26
+def newton_with_error_tracking(f, fdash, x_exact, x0, tol=1e-10):
+    errors = []
+    x = x0
+    xnew = x - (f(x) / fdash(x))
+    while np.abs(x - xnew) > tol:
+        if fdash(x) == 0:
+            return ValueError("Derivative equals zero")
+        x = xnew
+        xnew = x - (f(x) / fdash(x))
+        error = np.abs(xnew - x_exact)
+        errors.append(error)
+    return errors
+
+
+def plot_errors(errors):
+    # Creating the x values for the plot (iterations)
+    iterations = np.arange(len(errors))
+
+    # Plotting the errors
+    plt.scatter(iterations, errors, label="Error per Iteration")
+    plt.xlabel("Iteration")
+    plt.ylabel("Absolute Error")
+    plt.title("Absolute Error in Each Iteration - Bisection Method")
+    plt.legend()
+    plt.show()
+
+
+def plot_log_errors(errors):
+    # Convert errors to base 2 logarithm
+    log_errors = np.log2(errors)
+    # Creating the x values for the plot (iterations)
+    iterations = np.arange(len(log_errors))
+
+    # Plotting the errors
+    plt.scatter(iterations, log_errors, label="Log Error per Iteration")
+
+    # Determine slope and intercept of the best-fit straight line
+    slope, intercept = np.polyfit(iterations, log_errors, deg=1)
+    best_fit_line = slope * iterations + intercept
+    # Plot the best-fit line
+    plt.plot(iterations, best_fit_line, label="Best Fit Line", color="red")
+
+    plt.xlabel("Iteration")
+    plt.ylabel("Base 2 Log of Absolute Error")
+    plt.title("Log Absolute Error in Each Iteration")
+    plt.legend()
+    plt.show()
+
+
+f = lambda x: x**3 - 3
+fdash = lambda x: 3 * x**2
+xExact = np.cbrt(3)
+x0 = 1
+plot_errors(newton_with_error_tracking(f, fdash, xExact, x0, 1e-6))
+
+plot_log_errors(newton_with_error_tracking(f, fdash, xExact, x0, 1e-6))
+
+print("- " * 40)
+
+
 # 4.27
 def bisection(f, a, b, tol=1e-10):
     if f(a) * f(b) >= 0:
@@ -56,6 +117,8 @@ def comparison(f, fdash, a, b, x0, x1):
 
 
 comparison(f, fdash, 2, 4, 3, 4)
+
+print("- " * 40)
 
 
 # 4.29
@@ -121,10 +184,52 @@ def plot_error_progression(errors):
 
 plot_error_progression(Taylor_with_error_tracking(f, fdash, fddash, np.cbrt(3), 1))
 
+print("- " * 40)
+
 # 4.31
+f = lambda x: x**3 * (x - 3) * (x - 6) ** 4
+fdash = (
+    lambda x: 8 * x**7
+    - 189 * x**6
+    + 1728 * x**5
+    - 7560 * x**4
+    + 15552 * x**3
+    - 11664 * x**2
+)
+print(newton(f, fdash, 0.1))
+# Doesnt do massively well because the slope is so steep
+print()
+print(newton(f, fdash, 5.9, 1e-15))
+print("- " * 40)
+
+
+# 4.32
+def f(x):
+    return x * np.sin(x) - np.log(x)
+
+
+x = np.linspace(0, 5, 100)
+plt.plot(x, f(x))
+plt.grid()
+plt.show()
+
+
+print(fsolve(f, 3, full_output=1))
+#
+print()
+
+
 def F(x):
     return [x[0] * np.cos(x[1]) - 4, x[0] * x[1] - x[1] - 5]
 
 
-fsolve(F, [6, 1], full_output=1)
+print(fsolve(F, [6, 1], full_output=1))
 # Note: full_output=1 gives the solver diagnostics
+print()
+
+
+def F(x):
+    return [x[0] ** 2 - x[0] * x[1] ** 2 - 2, x[0] * x[1] - 2]
+
+
+print(fsolve(F, [1, 1], full_output=1))

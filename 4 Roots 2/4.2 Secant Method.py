@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+# 4.20
 def secant(f, x0, x1, tol=1e-10):
     xnm1 = x0
     xn = x1
@@ -9,16 +10,19 @@ def secant(f, x0, x1, tol=1e-10):
         xnp1 = xn - f(xn) * (xn - xnm1) / (f(xn) - f(xnm1))
         xnm1 = xn
         xn = xnp1
-        print(xn)
     return xn
 
 
 f = lambda x: x**2 - 2
-#print(secant(f, 0, 1))
+print(secant(f, 0, 1))
+print()
 f1 = lambda x: np.log(x) - np.sin(x)
-secant(f1, 1, 3)
+print(secant(f1, 1, 3))
+
+print("- " * 40)
 
 
+# 4.21
 def secant_with_error_tracking(f, x_exact, x0, x1, tol=1e-10):
     errors = []
     xnm1 = x0
@@ -32,7 +36,8 @@ def secant_with_error_tracking(f, x_exact, x0, x1, tol=1e-10):
     return errors
 
 
-#print(secant_with_error_tracking(f, np.sqrt(2), 0, 2))
+print(secant_with_error_tracking(f, np.sqrt(2), 0, 2))
+print()
 
 
 def plot_error_progression(errors):
@@ -51,7 +56,7 @@ def plot_error_progression(errors):
 
     # Fitting a straight line to the data points
     slope, intercept = np.polyfit(log_errors_n, log_errors_n_plus_1, deg=1)
-    print(slope, intercept)
+    print(f"y = {slope}x + {intercept}")
     best_fit_line = slope * log_errors_n + intercept
     plt.plot(log_errors_n, best_fit_line, color="red", label="Best Fit Line")
 
@@ -64,3 +69,9 @@ def plot_error_progression(errors):
 
 
 plot_error_progression(secant_with_error_tracking(f, np.sqrt(2), 1, 3))
+
+# 4.22
+# Output the equation of the line
+
+# 4.23
+# "Test for different functions"

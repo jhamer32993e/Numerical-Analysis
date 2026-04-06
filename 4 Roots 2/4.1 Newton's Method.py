@@ -8,11 +8,18 @@ fdash = lambda x: 2 * x
 
 
 def table(f, fdash, x0):
+    print(f"{'n':<2} | {'x_n':<29} | {'f(x_n)':<35} | " f"{'f\'(x_n)':<25}")
+    print("-" * 110)
     for i in range(5):
         print(
-            f"{i:<2} | x={x0:<25.10g} | f(x)={f(x0):<30.10g} | f'(x)={fdash(x0):<25.10g}"
+            f"{i:<2} | x_{i}={x0:<25.10g} | f(x)={f(x0):<30.10g} | f'(x)={fdash(x0):<25.10g}"
         )
         x0 = x0 - f(x0) / fdash(x0)
+
+
+table(f, fdash, x0)
+
+print("- " * 40)
 
 
 # 4.7
@@ -29,11 +36,19 @@ def newton(f, fdash, x0, tol=1e-10, MaxIterations=30):
     return "Does not converge"
 
 
-# print(newton(f, fdash, 1))
+# 4.8
+print(newton(f, fdash, 1))
+print()
 
 f1 = lambda x: x ** (1 / 3)
 f1dash = lambda x: (1 / 3) * x ** (-2 / 3)
-# table(f1, f1dash, 7)
+table(f1, f1dash, 7)
+
+print("- " * 40)
+
+
+# 4.9
+# Added if statement for breaking if the derivative is zero
 
 
 # 4.14
@@ -53,6 +68,8 @@ def newton_with_error_tracking(f, fdash, x_exact, x0, tol=1e-10):
 
 print(newton_with_error_tracking(f, fdash, np.sqrt(2), 1))
 
+print("- " * 40)
+
 
 # 4.15
 def plot_error_progression(errors):
@@ -71,7 +88,7 @@ def plot_error_progression(errors):
 
     # Fitting a straight line to the data points
     slope, intercept = np.polyfit(log_errors_n, log_errors_n_plus_1, deg=1)
-    print(slope, intercept)
+    print(f"y = {slope}x + {intercept}")
     best_fit_line = slope * log_errors_n + intercept
     plt.plot(log_errors_n, best_fit_line, color="red", label="Best Fit Line")
 
@@ -83,13 +100,14 @@ def plot_error_progression(errors):
     plt.show()
 
 
-# plot_error_progression(newton_with_error_tracking(f, fdash, np.sqrt(2), 1))
+plot_error_progression(newton_with_error_tracking(f, fdash, np.sqrt(2), 1))
 
+print("- " * 40)
 
 # 4.16
-# Edited prev function to print the formula of the polynomial it plots
+# Edited prev function to also print the formula of the polynomial it plots
 
 # 4.17
 f2 = lambda x: np.exp(x - 3) + np.sqrt(x + 6) - 4
 f2dash = lambda x: np.exp(x - 3) + 0.5 * (x + 6) ** (-0.5)
-# plot_error_progression(newton_with_error_tracking(f2, f2dash, 3, 1))
+plot_error_progression(newton_with_error_tracking(f2, f2dash, 3, 1))
