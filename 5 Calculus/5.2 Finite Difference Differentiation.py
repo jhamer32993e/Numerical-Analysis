@@ -42,46 +42,48 @@ def table(f, exact, delta_f):
 
 f = lambda x: np.sin(x) * (1 - x)
 exact = -np.sin(1)  # Derivative evaluated at 1
-delta_f = lambda h: (f(1 + h) - f(1)) / h
-
-table(f, exact, delta_f)
-f1 = lambda x: np.sin(x)
-exact1 = np.cos(1)
-delta_f1 = lambda h: (f1(1 + h) - f1(1)) / h
-table(f1, exact1, delta_f1)
-
-
 # exact is the value of the deriv evaluated at the point
-def plot_forward_difference_errors(f, x, exact, H):
+delta_f = lambda h: (f(1 + h) - f(1)) / h
+table(f, exact, delta_f)
+
+print()
+
+# f1 = lambda x: np.sin(x)
+# exact1 = np.cos(1)
+# delta_f1 = lambda h: (f1(1 + h) - f1(1)) / h
+# table(f1, exact1, delta_f1)
+
+
+def plot_forward_difference_errors(f, x, exact, H, factor):
     AbsError = []
-    for h in H:
+    for h in H(factor):
         approx = (f(x + h) - f(x)) / h
         AbsError.append(abs(approx - exact))
 
     # Make a loglog plot
-    plt.loglog(H, AbsError, "r*")  # Makes axes log scales
+    plt.loglog(H(factor), AbsError, "r*")  # Makes axes log scales
     plt.xlabel("h")
     plt.ylabel("Absolute Error")
-    plt.title("Absolute Error vs. h")
+    plt.title(f"Forward Difference Absolute Error vs. h={factor}^-n")
     plt.grid()
     plt.show()
     return
 
 
 f = lambda x: np.sin(x) * (1 - x)
+exact = -np.sin(1)
 x = 1
-exact = -np.sin(x)
-H = [2 ** (-n) for n in range(1, 11)]
-plot_forward_difference_errors(f, x, exact, H)
+H = lambda x: [x ** (-n) for n in range(1, 11)]
 
-H1 = [3 ** (-n) for n in range(1, 11)]
-plot_forward_difference_errors(f, x, exact, H1)
+plot_forward_difference_errors(f, x, exact, H, 2)
 
-H2 = [5 ** (-n) for n in range(1, 11)]
-plot_forward_difference_errors(f, x, exact, H2)
+plot_forward_difference_errors(f, x, exact, H, 3)
 
-H3 = [10 ** (-n) for n in range(1, 11)]
-plot_forward_difference_errors(f, x, exact, H3)
+plot_forward_difference_errors(f, x, exact, H, 5)
+
+plot_forward_difference_errors(f, x, exact, H, 10)
+
+print("- " * 40)
 
 
 # 5.13
@@ -108,6 +110,8 @@ plt.grid()
 plt.legend(["f(x) = sin(x)", "exact first deriv", "approx first deriv"])
 plt.show()
 
+print("- " * 40)
+
 
 # 5.14
 def ForwardDiff2(f, a, b, N):
@@ -124,6 +128,8 @@ plt.plot(x, f(x), "b", x, exact_df(x), "r--", x[0:-1], df, "k-.")
 plt.grid()
 plt.legend(["f(x) = sin(x)", "exact first deriv", "approx first deriv"])
 plt.show()
+
+print("- " * 40)
 
 # 5.15
 f1 = lambda x: np.sin(x) * (1 - x)
@@ -142,6 +148,9 @@ ax[1].semilogy(x[0:-1], abs(exact(x[0:-1]) - df))  # Second box, y axis log scal
 ax[1].grid()
 plt.show()
 
+print("- " * 40)
+
+
 # 5.16
 N = 150
 df = ForwardDiff2(f1, a, b, N)
@@ -149,6 +158,8 @@ x = np.linspace(a, b, N + 1)
 errors = abs(exact(x[0:-1]) - df)
 maxError = max(errors)
 print(maxError)
+
+print()
 
 
 def plotMaxForwardDiffErrors(f, fPrime, a, b, H):
@@ -162,13 +173,15 @@ def plotMaxForwardDiffErrors(f, fPrime, a, b, H):
     plt.loglog(H, maxError, "r*-")  # Makes axes log scales
     plt.xlabel("h")
     plt.ylabel("Max Absolute Error")
-    plt.title("Max Absolute Error vs. h")
+    plt.title("Forward Difference Max Absolute Error vs. h")
     plt.grid()
     plt.show()
     return
 
 
 plotMaxForwardDiffErrors(f1, exact, 0, 15, [1, 0.5, 0.2, 0.1])
+
+print("- " * 40)
 
 
 # 5.18
@@ -180,17 +193,17 @@ def CentralDifference(f, a, b, N):
     return df
 
 
-def plotCentralDifferenceErrors(f, x, exact, H):
+def plotCentralDifferenceErrors(f, x, exact, H, factor):
     AbsError = []
-    for h in H:
+    for h in H(factor):
         approx = (f(x + h) - f(x - h)) / (2 * h)
         AbsError.append(abs(approx - exact))
 
     # Make a loglog plot
-    plt.loglog(H, AbsError, "r*")  # Makes axes log scales
+    plt.loglog(H(factor), AbsError, "r*")  # Makes axes log scales
     plt.xlabel("h")
     plt.ylabel("Absolute Error")
-    plt.title("Absolute Error vs. h")
+    plt.title(f"Central Difference Absolute Error vs. h={factor}^-n")
     plt.grid()
     plt.show()
     return
@@ -201,17 +214,16 @@ x = 1
 exact = -np.sin(x)
 delta_f = lambda h: (f(1 + h) - f(1 - h)) / (2 * h)
 table(f, exact, delta_f)
-H = [2 ** (-n) for n in range(1, 11)]
-plotCentralDifferenceErrors(f, x, exact, H)
 
-H1 = [3 ** (-n) for n in range(1, 11)]
-plotCentralDifferenceErrors(f, x, exact, H1)
+plotCentralDifferenceErrors(f, x, exact, H, 2)
 
-H2 = [5 ** (-n) for n in range(1, 11)]
-plotCentralDifferenceErrors(f, x, exact, H2)
+plotCentralDifferenceErrors(f, x, exact, H, 3)
 
-H3 = [10 ** (-n) for n in range(1, 11)]
-plotCentralDifferenceErrors(f, x, exact, H3)
+plotCentralDifferenceErrors(f, x, exact, H, 5)
+
+plotCentralDifferenceErrors(f, x, exact, H, 10)
+
+print("- " * 40)
 
 # 5.20
 f = lambda x: np.sin(x) * (1 - x)
@@ -253,6 +265,8 @@ plt.grid()
 plt.legend()
 plt.show()
 
+print("- " * 40)
+
 
 # 5.23
 def SecondDiff(f, a, b, N):
@@ -265,14 +279,16 @@ def SecondDiff(f, a, b, N):
 
 # 5.24
 f = lambda x: np.sin(x) * (1 - x)
-print(SecondDiff(f, 0, 2, 100)[49])
-print(-2 * np.cos(1))
+print("Approx:", SecondDiff(f, 0, 2, 100)[49])
+print("Exact:", -2 * np.cos(1))
+
+print("- " * 40)
 
 # 5.25
 x = np.linspace(0, 15, 151)
 exact = lambda x: -2 * np.cos(x) + (x - 1) * np.sin(x)
 error = abs(SecondDiff(f, 0, 15, 150) - exact(x)[1:-1])
-print(max(error))
+print("Max Error:", max(error))
 
 
 def plotMaxSecondDiffErrors(f, fddash, a, b, H):
@@ -294,20 +310,3 @@ def plotMaxSecondDiffErrors(f, fddash, a, b, H):
 
 fddash = lambda x: (x - 1) * np.sin(x) - 2 * np.cos(x)
 plotMaxSecondDiffErrors(f, fddash, 0, 15, [0.1, 0.2, 0.4, 0.8, 1.6])
-
-
-f1 = lambda x: np.sin(x) * (1 - x)
-a = 0
-b = 15
-N = 250
-x = np.linspace(a, b, N)
-y = f1(x)
-df = SecondDiff(f1, a, b, N)
-exact = lambda x: np.cos(x) * (1 - x) - np.sin(x)
-fig, ax = plt.subplots(1, 2)  # Makes 1x2 grid for the plots to display in
-ax[0].plot(x, y, "b", x[0:-1], df, "r--")  # Plots the two in the first box
-ax[0].grid()
-ax[1].semilogy(x[0:-1], abs(exact(x[0:-1]) - df))  # Second box, y axis log scale,
-# plot error against x
-ax[1].grid()
-plt.show()

@@ -55,6 +55,8 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
+print("- " * 40)
+
 
 # 5.49
 def SecondDerivFromTable(data):
@@ -95,6 +97,8 @@ plt.legend()
 plt.tight_layout()
 plt.ylim(0, 4)
 plt.show()
+
+print("- " * 40)
 
 
 # 5.50
@@ -167,6 +171,8 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
+print("- " * 40)
+
 # 5.51
 data = np.array(
     pd.read_csv(
@@ -174,7 +180,7 @@ data = np.array(
     )
 )
 print(sum(TrapeziumFromTable(data)))
-print("-" * 80)
+print()
 
 
 def Trapezium(f, a, b, N):
@@ -202,6 +208,8 @@ print("Approx:", Trapezium(f, 0, 2, 100))
 Exact = FExact(2) - FExact(0)
 print("Exact:", Exact)
 print("Error:", abs((Trapezium(f, 0, 2, 100) - Exact) / Exact) * 100, "%")
+
+print("- " * 40)
 
 
 # 5.52
@@ -232,6 +240,7 @@ f2 = lambda x: np.cos(x**2)
 f2Exact = quad(f2, 0, 1)[0]
 PlotTrapeziumErrors(f2, 0, 1, f2Exact, DX)
 
+print("- " * 40)
 
 # 5.53
 FuelPriceFrame = pd.read_csv("Gasoline.csv")
@@ -275,6 +284,8 @@ def TrapeziumArray(y, x):
 
 print(sum(TrapeziumArray(Distance, JourneyNo)))
 # Integral gives the total distance travelled by taxis in 10000 journeys
+
+print("- " * 40)
 
 # 5.54
 f1 = lambda x: x / (x**4 + 1)
@@ -327,6 +338,7 @@ IntAndDeriv(f1, F1Exact, -1, 2, 1000, "f1")
 IntAndDeriv(f2, F2Exact, -1, 2, 1000, "f2")
 IntAndDeriv(f3, F3Exact, -1, 2, 1000, "f3")
 
+print("- " * 40)
 
 # 5.55
 data = np.array(

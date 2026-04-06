@@ -25,8 +25,10 @@ print(RiemannSum(f, 0, 1, 100, "midpoint"))
 print(RiemannSum(f1, 0, 1, 100, "left"))
 print(RiemannSum(f1, 0, 1, 100, "right"))
 print(RiemannSum(f1, 0, 1, 100, "midpoint"))
-print("-" * 50)
+print()
 print(RiemannSum(lambda x: np.sin(x), 1, 4, 100, "midpoint"))
+
+print("- " * 40)
 
 # 5.30
 exact = np.cos(0) - np.cos(1)
@@ -63,6 +65,8 @@ RiemannTable(f2, 0, 1, 3, "left")
 # RiemannTable(f2, 0, 1, 3, "right")
 # RiemannTable(f2, 0, 1, 3, "midpoint")
 
+print("- " * 40)
+
 
 # 5.31
 def PlotRiemannErrors(f, a, b, exact, DX):
@@ -94,6 +98,8 @@ exact = -np.cos(1) + np.cos(0)
 DX = [2 ** (-n) for n in range(1, 11)]
 PlotRiemannErrors(f, 0, 1, exact, DX)
 
+print("- " * 40)
+
 
 # 5.34
 def Trapezium(f, a, b, N):
@@ -106,7 +112,9 @@ def Trapezium(f, a, b, N):
 
 f = lambda x: 0.2 * (x**2) * (5 - x)
 print(Trapezium(f, 1, 4, 100))
+print()
 print(Trapezium(lambda x: np.sin(x), 1, 4, 100))
+print()
 
 
 def TrapeziumTable(f, a, b, factor, exact):
@@ -157,6 +165,8 @@ def PlotTrapeziumErrors(f, a, b, exact, DX):
 
 DX = [2 ** (-n) for n in range(1, 11)]
 PlotTrapeziumErrors(f, 1, 4, exact, DX)
+
+print("- " * 40)
 
 
 # 5.38
@@ -216,8 +226,12 @@ def PlotSimpsonErrors(f, a, b, exact, DX):
 
 f = lambda x: np.exp(x)
 exact = np.exp(1) - np.exp(0)
+print()
 SimpsonTable(f, 0, 1, 2, exact)
+print()
 PlotSimpsonErrors(f, 0, 1, exact, DX)
+
+print("- " * 40)
 
 # 5.40
 f = lambda x: np.exp(3 * x) * np.sin(2 * x)
