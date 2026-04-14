@@ -97,7 +97,3 @@ for i in range(len(C)):
     plt.legend(["euler", "midpoint", "test method"])
     plt.show()
 # Slope gives the order of the error
-
-
-f = lambda x, t: -0.5*x
-print(Midpoint1D(f, 6, 0, 6, 1))
