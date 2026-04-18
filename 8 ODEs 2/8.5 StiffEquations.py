@@ -91,6 +91,8 @@ for i in H:
     plt.ylim(-1, 1)
     plt.show()
 
+print("- " * 40)
+
 
 # 8.17
 def Euler(F, x0, t0, tmax, dt):

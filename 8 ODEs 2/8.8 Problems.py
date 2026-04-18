@@ -1,5 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from scipy import optimize as optimise
+from IPython.display import HTML
 
 
 def Euler1D(f, x0, t0, tmax, dt):
@@ -112,5 +115,89 @@ for i, a in enumerate(A):
     plt.grid()
     plt.show()
 
+print("- " * 40)
+
 
 # 8.23
+def BackwardEuler(F, x0, t0, tmax, dt):
+    N = round((tmax - t0) / dt)
+    dt = (tmax - t0) / N
+
+    t = np.linspace(t0, tmax, N + 1)
+    x = np.zeros((len(t), len(x0)))
+    x[0, :] = x0
+
+    for n in range(N):
+        G = lambda y: y - dt * F(y, t[n + 1]) - x[n, :]
+        x[n + 1, :] = optimise.fsolve(G, x[n, :])
+
+    return x, t
+
+
+F = lambda x, t: np.array(
+    [
+        x[1],
+        -x[0] / (x[0] ** 2 + x[2] ** 2) ** 1.5,
+        x[3],
+        -x[2] / (x[0] ** 2 + x[2] ** 2) ** 1.5,
+    ]
+)
+t0 = 0
+tmax = 100
+dt = 0.1
+
+for i in range(1, 6):
+    x0 = [4, 0, 0, i / 2]
+    x, t = BackwardEuler(F, x0, t0, tmax, dt)
+
+    plt.plot(x[:, 0], x[:, 2], label=f"v_y(0) = {i/2}")
+    plt.xlabel("x position")
+    plt.ylabel("y position")
+    plt.title("Orbital Dynamics via Implicit Backward Euler")
+    plt.axis("equal")
+    plt.grid()
+    plt.legend()
+    plt.show()
+
+# Animation by Gemini
+# Uncomment to show animation, highlight then "CTRL + /"
+# Takes a while to run
+# x0 = [4.0, 0.0, 0.0, 0.5]
+# x_sol, t_sol = BackwardEuler(F, x0, t0, tmax, dt)
+# x_data = x_sol[:, 0]
+# y_data = x_sol[:, 2]
+
+# fig, ax = plt.subplots(figsize=(6, 6))
+# ax.set_xlim(-5, 5)
+# ax.set_ylim(-5, 5)
+# ax.plot(0, 0, "yo", markersize=15, label="Sun")
+# ax.set_title("Backward Euler Orbital Animation")
+# ax.grid()
+# ax.legend()
+
+# (trail,) = ax.plot([], [], "b-", alpha=0.5)
+# (planet,) = ax.plot([], [], "ro", markersize=8)
+
+
+# def init():
+#     trail.set_data([], [])
+#     planet.set_data([], [])
+#     return trail, planet
+
+
+# def animate(i):
+#     trail.set_data(x_data[:i], y_data[:i])
+#     planet.set_data([x_data[i]], [y_data[i]])
+#     return trail, planet
+
+
+# ani = animation.FuncAnimation(
+#     fig, animate, init_func=init, frames=len(x_data), interval=20, blit=True
+# )
+
+# plt.close(fig)
+# HTML(ani.to_jshtml())
+
+print("- " * 40)
+
+# 8.24
