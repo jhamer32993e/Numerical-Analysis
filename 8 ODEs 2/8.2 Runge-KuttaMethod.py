@@ -67,7 +67,3 @@ def RK4(F, x0, t0, tmax, dt):
         )
         x[n + 1, :] = x[n, :] + dt * estimate_of_slope
     return x, t
-
-
-t = [-2, -2.5, -3]
-print(6*np.exp(t))

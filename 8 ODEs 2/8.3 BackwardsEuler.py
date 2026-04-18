@@ -56,3 +56,6 @@ plt.plot(t, xBackward, "b--", label="Backwards")
 plt.plot(t, xExact(t), "r-", label="Exact")
 plt.legend()
 plt.show()
+
+
+print(BackwardEuler1D(lambda x, t: -x + np.sin(t / 2), 1, 0, 10, 1)[-1,])
