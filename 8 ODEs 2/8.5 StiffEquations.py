@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy import optimize as optimise
 
 
 # 8.15
@@ -88,4 +89,61 @@ for i in H:
     plt.grid()
     plt.title(f"dt = {i}")
     plt.ylim(-1, 1)
+    plt.show()
+
+
+# 8.17
+def Euler(F, x0, t0, tmax, dt):
+    N = round((tmax - t0) / dt)
+    dt = (tmax - t0) / N
+
+    t = np.linspace(t0, tmax, N + 1)
+    x = np.zeros((len(t), len(x0)))  # 2D array
+    x[0, :] = x0
+    for n in range(N):
+        x[n + 1, :] = x[n, :] + dt * F(x[n, :], t[n])
+
+    return x, t
+
+
+def BackwardEuler(F, x0, t0, tmax, dt):
+    N = round((tmax - t0) / dt)
+    dt = (tmax - t0) / N
+
+    t = np.linspace(t0, tmax, N + 1)
+    x = np.zeros((len(t), len(x0)))
+    x[0, :] = x0
+
+    for n in range(N):
+        G = lambda y: y - dt * F(y, t[n + 1]) - x[n, :]
+        x[n + 1, :] = optimise.fsolve(G, x[n, :])
+
+    return x, t
+
+
+F = lambda x, t: np.array([x[1], -100 * x[0] - 101 * x[1]])
+x0 = [1, 0]
+t0 = 0
+tmax = 5
+H = [0.1, 0.01, 0.001]
+exact = lambda t: 100 / 99 * np.exp(-t) - 1 / 99 * np.exp(-100 * t)
+
+for i in H:
+    xEuler, t = Euler(F, x0, t0, tmax, i)
+    plt.plot(t, xEuler[:, 0], "b-", label="Euler Approx")
+    plt.plot(t, exact(t), "r-", label="Exact")
+    plt.grid()
+    plt.legend()
+    plt.title(f"dt = {i}")
+    plt.ylim(-5, 5)
+    plt.show()
+
+for i in H:
+    xBackward, t = BackwardEuler(F, x0, t0, tmax, i)
+    plt.plot(t, xBackward[:, 0], "b-", label="Backward Euler Approx")
+    plt.plot(t, exact(t), "r-", label="Exact")
+    plt.grid()
+    plt.legend()
+    plt.title(f"dt = {i}")
+    # plt.ylim(-5, 5)
     plt.show()
