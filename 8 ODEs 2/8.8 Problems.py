@@ -201,3 +201,52 @@ for i in range(1, 6):
 print("- " * 40)
 
 # 8.24
+Pursuit = lambda x, t, k: np.array(
+    [
+        -5 * k * x[0] / np.sqrt(x[0] ** 2 + (5 * t - x[1]) ** 2),
+        5 * k * (5 * t - x[1]) / np.sqrt(x[0] ** 2 + (5 * t - x[1]) ** 2),
+    ]
+)
+k = 1.2
+F = lambda y, t: Pursuit(y, t, k)
+x_path, t_steps = BackwardEuler(F, [10, 0], 0, 15, 0.2)
+
+p_x = x_path[:, 0]
+p_y = x_path[:, 1]
+e_x = np.zeros_like(t_steps)
+e_y = 5 * t_steps
+
+fig, ax = plt.subplots(figsize=(8, 8))
+ax.set_xlim(-2, 12)
+ax.set_ylim(-2, np.max(e_y) + 2)
+ax.set_aspect('equal')
+ax.grid(True)
+ax.set_title("Curve of Pursuit Animation")
+
+evader_trail, = ax.plot([], [], 'r--', alpha=0.5, label='Evader Path')
+pursuer_trail, = ax.plot([], [], 'b-', alpha=0.5, label='Pursuer Path')
+evader_dot, = ax.plot([], [], 'ro', markersize=8)
+pursuer_dot, = ax.plot([], [], 'bo', markersize=8)
+ax.legend(loc="upper left")
+
+def init():
+    evader_trail.set_data([], [])
+    pursuer_trail.set_data([], [])
+    evader_dot.set_data([], [])
+    pursuer_dot.set_data([], [])
+    return evader_trail, pursuer_trail, evader_dot, pursuer_dot
+
+def animate(i):
+    evader_trail.set_data(e_x[:i], e_y[:i])
+    pursuer_trail.set_data(p_x[:i], p_y[:i])
+    evader_dot.set_data([e_x[i]], [e_y[i]])
+    pursuer_dot.set_data([p_x[i]], [p_y[i]])
+    return evader_trail, pursuer_trail, evader_dot, pursuer_dot
+
+ani = animation.FuncAnimation(
+    fig, animate, init_func=init, frames=len(t_steps), interval=50, blit=True
+)
+
+# --- THE FIX FOR NOTEBOOKS ---
+plt.close(fig) # Prevents a duplicate static plot from showing up
+HTML(ani.to_jshtml()) # Embeds the playable animation
