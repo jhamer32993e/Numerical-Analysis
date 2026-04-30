@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 from IPython.display import HTML, display
 import plotly.graph_objects as go
-import warnings
 
 # 10.2
 x = np.linspace(0, 1, 101)
@@ -292,7 +291,6 @@ x, y, t, U = MasterHeat2D(
     "D",
 )
 
-warnings.filterwarnings("ignore")
 fig = go.Figure(data=[go.Surface(z=np.clip(U[:, :, 10].T, -2, 2), x=x, y=y)])
 fig.update_layout(
     width=800,
